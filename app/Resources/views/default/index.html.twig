@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <div class="row row-articles">
+        <div class="col-md-8">
+            {% if actualites is empty %}
+                Aucune actualité..
+            {% else %}
+                {% for actu in actualites %}
+                    <div class="col-md-12 article">
+                       <div class="card">
+                            <div class="card-body">
+                                <h5><a href="{{ path('showActualite', {'id': actu.id } ) }}">{{ actu.title }}</a></h5>
+                                <p>{{ (actu.description|length > 50 ? actu.description|slice(0, 50) ~ '...' : actu.description)|raw }}</p>
+                                <footer class="blockquote-footer">Postée le {{ actu.createdAt|date('d/m/Y à H:i:s') }} par {{ actu.createdBy }}</footer>
+                                </blockquote>
+                                <br>
+                                <a href="{{ path('deleteActualite', {'id': actu.id } ) }}" class="btn btn-danger">Supprimer</a>
+                            </div>
+                        </div> 
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-4">
+                <h6>Ajouter un article</h6> 
+                        <br>
+                            {{ form_start(form) }}
+                            <div class="form-group">
+                                {{ form_label(form.title)}}
+                                {{ form_widget(form.title)}}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.createdBy)}}
+                                {{ form_widget(form.createdBy)}}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.description)}}
+                                {{ form_widget(form.description)}}
+                            </div>
+                            {{ form_end(form) }}
+            </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+    <style type="text/css">
+        .article{
+            margin-bottom: 3%;
+        }
+        .row-articles{
+            margin-top: 10%;
+         }
+    </style>
+{% endblock %}

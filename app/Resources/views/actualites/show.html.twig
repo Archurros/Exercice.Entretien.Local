@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+    <div class="row row-article">
+        <div class="col-md-9">
+            <div id="article">
+                <h3>{{ actualite.title }}</h3>
+                <div class="blockquote-footer">Postée le <b>{{ actualite.createdAt|date('d/m/Y H:i:s') }}</b> par <b>{{ actualite.createdBy }}</b></div>
+                <br>
+                <div class="description">
+                    {{ actualite.description|raw }}
+                </div>
+            </div>
+            <div id="commentaires">
+               <h4>Commentaires ({{ actualite.numberComm}})</h4> 
+                <div class="card">
+                    <div class="card-body">
+                        <h6>Ecrivez un petit quelque-chose..</h6> 
+                        <br>
+                            {{ form_start(form) }}
+                            <div class="form-group">
+                                {{ form_label(form.createdBy)}}
+                                {{ form_widget(form.createdBy)}}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.message)}}
+                                {{ form_widget(form.message)}}
+                            </div>
+                            {{ form_end(form) }}
+                    </div>
+                </div> 
+                {% for commentaire in actualite.commentaires %}
+                <div class="card">
+                    <div class="card-body">
+                        <p><b>{{ commentaire.createdBy }}</b> - {{ commentaire.createdAt|date('d/m/Y à H:i:s') }} </p>
+                        <p>{{ commentaire.message|raw }}</p>
+                        <a href="{{ path('deleteCommentaire', {'id': commentaire.id } ) }}" class="btn btn-danger">Supprimer</a>
+                    </div>
+                </div> 
+                {% endfor %}
+                
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+    <style type="text/css">
+        .row-article{
+            margin-top: 5%;
+         }
+         #article{
+            margin-bottom: 5%;
+         }
+         .card{
+            margin-top: 3%;
+            margin-bottom: 3%;
+         }
+    </style>
+{% endblock %}
